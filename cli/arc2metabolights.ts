@@ -1,6 +1,7 @@
 #!/usr/bin/env deno run --allow-read
 
 import { Command } from "@cliffy/command"
+import { clearContacts } from "../lib/contacts.ts";
 
 await new Command()
   .name("arc2metabolights")
@@ -9,8 +10,8 @@ await new Command()
   .command("clear-contacts", "Clear contacts for a given study")
     .option("-s, --study-id <study-id:string>", "MetaboLights study identifier", { required: true })
     .option("-u, --user-token <user-token:string>", "User authentication token", { required: true })
-    .action((options) => {
-      console.log("clear-contacts called with:", options);
+    .action(async (options) => {
+      await clearContacts(options.studyId, options.userToken);
     })
   .command("import-contacts", "Import contacts from an ARC ISA JSON file")
     .option("-s, --study-id <study-id:string>", "MetaboLights study identifier", { required: true })

@@ -17,8 +17,10 @@ await new Command()
     .option("-s, --study-id <study-id:string>", "MetaboLights study identifier", { required: true })
     .option("-u, --user-token <user-token:string>", "User authentication token", { required: true })
     .option("-f, --file <file:string>", "Path to arc-isa.json file", { required: true })
-    .option("-i, --import-from <import-from:string>", "Source string for import", { required: true })
-    .action((options) => {
-      console.log("import-contacts called with:", options);
+    .option("-i, --import-from <import-from:string>", "Study/Assay/Investigation @id to import the contacts from (e.g. './' for the investigation, 'studies/TalinumGenomeDraft/', or 'assays/RNASeq/')", { required: true })
+    .action(async (options) => {
+      const { studyId, userToken, file, importFrom } = options;
+      const { importContacts } = await import("../lib/contacts.ts");
+      await importContacts(studyId, userToken, file, importFrom);
     })
   .parse(Deno.args);
